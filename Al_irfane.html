@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_top">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Quick Start - Leaflet</title>
+    
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="leaflet.css">
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    
+    <script src="leaflet.js"></script>
+    
+    <script src="TEST.geojson" type="text/javascript"></script>
+    <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .leaflet-container {
+            height: 400px;
+            width: 600px;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+
+    
+</head>
+<body>
+
+<div id="map" style="width: 600px; height: 400px;"></div>
+<script>
+
+    const map = L.map('map').setView([33.97653913, -6.86688747], 13);
+
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    const circle = L.circle([33.97653913, -6.86688747], {
+        color: 'blue', 
+        fillColor: '#30f', 
+        fillOpacity: 0.1, 
+        radius: 100 
+    }).addTo(map);
+    circle.bindPopup("c'est l'iav.").openPopup();
+    const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        const drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems
+            }
+        });
+        map.addControl(drawControl);
+
+        map.on('draw:created', function (e) {
+            const layer = e.layer;
+            drawnItems.addLayer(layer);
+        });
+    
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent(`You clicked the map at ${e.latlng.toString()}`)
+            .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+    L.geoJSON(test).addTo(map);
+    map.addControl(new L.Control.Fullscreen());
+
+</script>
+<style>
+    .footer-title {
+        font-size: 16px; 
+        color:#2a0606; 
+        text-align: center; 
+        margin: 5px 0; 
+    }
+</style>
+</head>
+<body>
+
+<footer>
+<h3 class="footer-title">Réalisé par : Lamyae Bukhdoul et Manal Arbaoui</h3>
+</footer>
+      
+
+</body>
+</html>
+
+
+
+
